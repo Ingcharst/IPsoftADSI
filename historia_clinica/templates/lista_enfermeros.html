@@ -1,0 +1,55 @@
+
+{% extends "base.html" %}
+
+{% block titulo %} Lista de Enfermeros {% endblock titulo %}
+
+
+{% block contenido %}
+       
+{% load static %}
+<link href={% static 'assets/css/index.css'%} rel="stylesheet" />
+ <!-- /. NAV SIDE  -->
+ <div id="page-wrapper" >
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-lg-12">
+             <h2>Lista de Enfermeros Inscritos</h2>   
+            </div>
+        </div>       
+
+
+    </title> 
+    <style> table { width: 100%; border-collapse: collapse; margin-bottom: 20px; } 
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; } 
+        th { background-color: #f2f2f2; } 
+        tr:hover { background-color: #f5f5f5; } 
+        .actions { display: flex; gap: 10px; } 
+        .actions a { text-decoration: none; color: #007bff; } 
+        .actions a:hover { text-decoration: underline; } 
+        .button { padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; display: inline-block; } 
+        .button:hover { background-color: #0056b3; } 
+    </style> 
+</head> 
+<body> 
+    
+    <table> 
+        <tr> 
+            <th>Nombre</th> 
+            <th>Apellido</th>
+            <th>Telefono</th> 
+            <th>Acciones</th>
+         </tr> 
+         {% for enfermero in enfermeros %} 
+         <tr>
+             <td>{{ enfermero.nombre }}</td> 
+             <td>{{ enfermero.apellido}}</td> 
+             <td>{{ enfermero.telefono }}</td> 
+             <td class="actions"> 
+                <a href="{% url 'actualizar_enfermero' enfermero.id %}">Actualizar</a> 
+                <a href="{% url 'eliminar_enfermero' enfermero.id %}">Eliminar</a> 
+            </td> </tr> {% endfor %} </table> 
+            <a href="{% url 'ingresar_enfermero' %}" class="button">Ingresar Nuevo Enfermero</a> 
+        </body>
+    </body>
+
+{% endblock %}

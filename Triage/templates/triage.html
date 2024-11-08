@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block titulo %} Triage {% endblock titulo %}
+
+
+{% block contenido %}
+       
+
+{% load static %}
+<link href={% static 'assets/css/index.css'%} rel="stylesheet" />
+<style> table { width: 100%; border-collapse: collapse; margin-bottom: 20px; } 
+    th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; } 
+    th { background-color: #f2f2f2; } 
+    tr:hover { background-color: #f5f5f5; } 
+    .actions { display: flex; gap: 10px; } 
+    .actions a { text-decoration: none; color: #007bff; } 
+    .actions a:hover { text-decoration: underline; } 
+    .button { padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; display: inline-block; } 
+    .button:hover { background-color: #0056b3; } 
+</style> 
+ <!-- /. NAV SIDE  -->
+  
+
+ <div id="page-wrapper" >
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-lg-12">
+             <h2>Triage</h2>   
+            </div>
+        </div> 
+        <head> 
+
+        </head> 
+
+      
+        <body> 
+        <style>
+            .card { 
+                background-color: #fff; 
+                border-radius: 8px; 
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+                padding: 20px; max-width: 800px; width: 100%; margin: 20px; }
+
+            .card h1 { margin-top: 0; font-size: 24px; } 
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; } 
+            th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+            th { background-color: #f2f2f2; } 
+            tr:hover { background-color: #f5f5f5; } </style>
+        </head> 
+        <body> 
+            <div class="card"> 
+                <h1>Pacientes en Espera</h1> 
+                <table> 
+                    <tr> 
+                        <th>Nombre</th> 
+                        <th>Identificación</th> 
+                        <th>Fecha de Admisión</th> 
+                    </tr> 
+                    {% for paciente in pacientes %} <tr> 
+                        <td>{{ paciente.nombre }}</td> 
+                        <td>{{ paciente.identificacion }}</td> 
+                        <td>{{ paciente.fecha_admision }}</td> 
+                    </tr> 
+                    {% endfor %} </table>
+                 </div> 
+               
+    </body>
+
+<h3>Registar Signos Vitales</h3>
+
+<button>
+    <a href="{% url 'registrar_signos_vitales' %}">Registrar</a>
+</button>
+
+{% endblock %}

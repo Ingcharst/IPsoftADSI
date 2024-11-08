@@ -1,0 +1,28 @@
+<!-- app/agregar_observacion.html -->
+{% extends 'base.html' %}
+
+{% block title %}Añadir Observación{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5 p-4 rounded shadow-lg bg-light">
+    <h1 class="text-center mb-4 text-primary">Añadir Observación para la Nota ID: {{ nota.id }}</h1>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-lg">Añadir Observación</button>
+        </div>
+    </form>
+
+    <div class="text-center mt-4">
+        <a class="btn btn-secondary" href="{% url 'ver_nota' nota.id %}">Volver a la Nota</a>
+    </div>
+</div>
+
+<!-- Agregar iconos de FontAwesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+{% endblock %}

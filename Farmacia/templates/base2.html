@@ -1,0 +1,126 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}IPSoft Dashboard{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'assets/css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link href={% static 'assets/css/bootstrap.css' %} rel="stylesheet" />
+             <!-- FONTAWESOME STYLES-->
+            <link href={% static 'assets/css/font-awesome.css'%} rel="stylesheet" />
+             <!-- MORRIS CHART STYLES-->
+            <link href={% static 'assets/js/morris/morris-0.4.3.min.css'%} rel="stylesheet" />
+                <!-- CUSTOM STYLES-->
+            <link href={% static 'assets/css/custom.css'%} rel="stylesheet" />
+            
+            <link href={% static 'assets/css/proyectos.css'%} rel="stylesheet" />
+            <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+</head>
+<body>
+    <!-- Barra de Navegación Superior -->
+    <header class="top-nav">
+        <div class="nav-left">IPSoft - SENA</div>
+        
+        <div style=" padding: 10px 50px 8px 50px; float: right; font-size: 26px;">
+            <div class="collapse navbar-collapse" id="navbarNav"> 
+                  <ul class="navbar-nav ml-auto"> 
+                      {% if user.is_authenticated %} 
+                      <li class="nav-item"> 
+                          <a class="nav-link" style="color: white; margin-right: 10px;" href="#">Hola, {{ user.username }}</a> 
+                      </li> 
+                      <li class="nav-item"> 
+                          <form method="post" action="{% url 'logout' %}"> 
+                              {% csrf_token %} 
+                              <button type="submit" class="btn btn-danger nav-link" style="color: white;">Cerrar sesión</button> 
+                          </form> 
+                      </li>
+                      {% else %} 
+                      <li class="nav-item"> 
+                          <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a> 
+                      </li> 
+                       {% endif %} 
+                     </ul> 
+              </div> 
+          </div>
+    </header>
+
+    <!-- Barra Lateral -->
+    <aside class="side-nav">
+        <li class="text-center">
+            <img src="{% static 'assets/img/ipsoft.png' %}" alt="Logo IPSoft" class="nav-logo">
+        </li>
+        <h2>Módulos</h2>
+        
+        <ul>
+            <li class="text-center">
+                <img src={% static 'assets/img/ipsoft.png'%} class="user-image img-responsive"/>
+            </li>
+                                                             
+                <li> <a class="active-menu"  href="{% url 'index' %}"><i class="fa fa-dashboard fa-3x"></i> Dashboard</a></li>
+                <li> <a  href="{% url 'ingresar_paciente' %}"><i class="fa fa-edit fa-3x"></i> Admisiones</a> </li>
+                <li> <a  href="{% url 'atencion_medica' %}"><i class="fa fa-qrcode fa-3x"></i> Notas de Enfermería</a> </li>
+                <li> <a  href="#"><i class="fa fa-desktop fa-3x"></i> UCI</a> </li>
+                <li> <a   href="#"><i class="fa fa-bar-chart-o fa-3x"></i> Farmacia</a> 
+                         <ul class="nav nav-second-level">
+                            <li><a href="{% url 'lista_recetas_pendientes' %}">Medicamnentos Pendientes</a></li>
+                            <li><a href="{% url 'lista_recetas_entregadas' %}">Medicamentos Suministrados</a></li>
+                            <li><a href="{% url 'lista_recetas_entregadas' %}">Lista de medicamentos</a></li>
+                            <li><a href="{% url 'lista_recetas_entregadas' %}">Agregar medicamentos</a></li>
+                            <li><a href="{% url 'lista_recetas_entregadas' %}">Actualizar medicamentos</a></li>
+                            <li><a href="{% url 'lista_recetas_entregadas' %}">Eliminar medicamentos</a></li>
+                         </ul>   
+                </li>	
+                <li  > <a  href="#"><i class="fa fa-table fa-3x"></i> Table Examples</a> </li>
+                <li  ><a  href="#"><i class="fa fa-square-o fa-3x"></i> Blank Page</a> </li>
+          </ul>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2024 IPSoft - Software de Administración Clínica - SENA</p>
+    </footer>
+    <script>
+        function setActiveLink(link, pageName) {
+            document.querySelectorAll('.nav-links li').forEach(item => {
+                item.classList.remove('active');
+            });
+            link.parentElement.classList.add('active');
+        }
+    </script>
+</body>
+</html>
+     
+<!-- /. WRAPPER  -->
+<!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+<!-- JQUERY SCRIPTS -->
+<script src={%static 'assets/js/jquery-1.10.2.js'%} ></script>
+<!-- BOOTSTRAP SCRIPTS -->
+<script src={% static 'assets/js/bootstrap.min.js'%}></script>
+<!-- CUSTOM SCRIPTS -->
+<script src={% static 'assets/js/custom.js'%} ></script>
+ <!-- /. WRAPPER  -->
+    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+    <!-- JQUERY SCRIPTS -->
+    <script src={% static 'assets/js/jquery-1.10.2.js'%}></script>
+      <!-- BOOTSTRAP SCRIPTS -->
+    <script src={% static 'assets/js/bootstrap.min.js'%}></script>
+    <!-- METISMENU SCRIPTS -->
+    <script src={% static 'assets/js/jquery.metisMenu.js'%}></script>
+     <!-- MORRIS CHART SCRIPTS -->
+     <script src={% static 'assets/js/morris/raphael-2.1.0.min.js'%}></script>
+    <script src="static/assets/js/morris/morris.js"></script>
+      <!-- CUSTOM SCRIPTS -->
+    <script src={% static 'assets/js/custom.js'%}></script>
+    

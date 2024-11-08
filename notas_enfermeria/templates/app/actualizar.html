@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Editar Notas del Paciente{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="container mt-5">
+  <!-- Formulario para buscar empleados -->
+  <form method="POST" action="{% url 'buscador' %}" class="mb-5">
+    {% csrf_token %}
+    <div class="input-group shadow-sm">
+      <input type="text" class="form-control bg-light border-0 rounded-pill" placeholder="Buscar paciente..." name="buscar" id="id_buscar">
+      <div class="input-group-append">
+        <button class="btn btn-primary rounded-pill" type="submit">
+          <i class="fas fa-search"></i> Buscar
+        </button>
+      </div>
+    </div>
+  </form>
+
+  {% if no %}
+    <div class="card shadow-lg p-4">
+      <h1 class="text-center text-primary mb-4">Editar Notas del Paciente</h1>
+      
+      <!-- Formulario para editar los datos del empleado -->
+      <form method="POST" action="{% url 'actualizar' no.id %}">
+        {% csrf_token %}
+
+        <div class="form-group mb-4">
+          <label for="observaciones" class="form-label">Observaciones</label>
+          <textarea class="form-control border border-primary" id="nota_enfermeria" name="nota_enfermeria" rows="4" placeholder="Ingrese las observaciones" required>{{ no.nota_enfermeria }}</textarea>
+        </div>
+
+        <!-- Botones para enviar o cancelar -->
+        <div class="text-center">
+          <button type="submit" class="btn btn-success btn-lg mr-3">
+            <i class="fas fa-save"></i> Actualizar
+          </button>
+          <a href="{% url 'lista' %}" class="btn btn-secondary btn-lg">
+            <i class="fas fa-times"></i> Cancelar
+          </a>
+        </div>
+      </form>
+    </div>
+  {% else %}
+    <div class="alert alert-danger text-center">
+      <p><i class="fas fa-exclamation-circle"></i> El paciente no se encuentra en la base de datos.</p>
+    </div>
+  {% endif %}
+</div>
+
+<!-- Agregar iconos de FontAwesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+{% endblock %}

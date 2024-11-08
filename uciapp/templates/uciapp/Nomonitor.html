@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de Signos Vitales</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'uciapp/css/style.css' %}">
+</head>
+<body>
+    <div class="monitor">
+        <!-- Panel principal con la cuadrícula y electrocardiograma -->
+        <div class="monitor-izquierda">
+            <!-- Canvas para el EKG -->
+            <canvas id="ekgCanvas" width="800" height="200"></canvas>
+        </div>
+
+        <!-- Panel lateral derecho -->
+        <div class="panel-derecho">
+            <div class="signo">
+                <i class="fas fa-heart"></i>
+                <div class="valor">
+                    <span class="numero" id="frecuenciaCardiaca">{{ signos_vitales.frecuencia_cardiaca }}</span> <span class="unidad">PPM</span>
+                </div>
+            </div>
+            <div class="signo">
+                <i class="fas fa-tachometer-alt"></i>
+                <div class="valor">
+                    <span class="numero">{{ signos_vitales.tension_arterial_sistolica }}/{{ signos_vitales.tension_arterial_diastolica }}</span> <span class="unidad">mmHg</span>
+                </div>
+            </div>
+            <div class="signo">
+                <i class="fas fa-bars"></i>
+                <div class="valor">
+                    <span class="numero">{{ signos_vitales.saturacion_oxigeno }}</span> <span class="unidad">%SPO2</span>
+                </div>
+            </div>
+            <div class="signo">
+                <i class="fas fa-lungs"></i>
+                <div class="valor">
+                    <span class="numero">{{ signos_vitales.respiraciones }}</span> <span class="unidad">RPM</span>
+                </div>
+            </div>
+            <div class="signo">
+                <i class="fas fa-thermometer-half"></i>
+                <div class="valor">
+                    <span class="numero">{{ signos_vitales.temperatura }}</span> <span class="unidad">°C</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sonido de "beep" -->
+    <audio id="beepSound" src="{% static 'uciapp/sounds/beep.mp3' %}" preload="auto"></audio>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Variables para el Canvas y el sonido de beep
+        const canvas = document.getElementById('ekgCanvas');
+        const ctx = canvas.getContext('2d');
+        const beepSound = document.getElementById('beepSound');
+
+        let frecuenciaCardiaca = {{ signos_vitales.frecuencia_cardiaca }};
+        let frecuenciaCardiacaMax = 180;
+        let frecuenciaCardiacaMin = 60;
+
+        // Variables para el gráfico EKG
+        let currentX = 0;
+        let waveData = [];
+
+        // Configuración del gráfico EKG (representando el patrón típico)
+        const EKGPattern = [
+            { time: 0, y: 100 },    // Inicio
+            { time: 0.2, y: 50 },   // Onda P
+            { time: 0.3, y: 120 },  // Complejo QRS
+            { time: 0.5, y: 50 },   // Onda T
+            { time: 0.7, y: 100 },  // Retorno a base
+        ];
+
+        // Crear la onda EKG con base en la frecuencia cardíaca
+        function generarEKG() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            const latidoIntervalo = 60 / frecuenciaCardiaca; // Tiempo entre latidos en segundos
+
+            // Generar puntos para un latido completo
+            waveData.push({ time: currentX, y: 100 });
+            EKGPattern.forEach(point => {
+                waveData.push({
+                    time: currentX + point.time * latidoIntervalo,
+                    y: point.y
+                });
+            });
+
+            // Dibujar la línea EKG
+            for (let i = 1; i < waveData.length; i++) {
+                const point1 = waveData[i - 1];
+                const point2 = waveData[i];
+                const x1 = point1.time * canvas.width / latidoIntervalo;
+                const y1 = point1.y;
+                const x2 = point2.time * canvas.width / latidoIntervalo;
+                const y2 = point2.y;
+
+                ctx.lineTo(x1, y1);
+                ctx.moveTo(x2, y2);
+            }
+
+            ctx.strokeStyle = "#00b5e2";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Limitar la cantidad de datos para no sobrecargar el canvas
+            if (waveData.length > canvas.width) {
+                waveData.shift();
+            }
+
+            currentX += latidoIntervalo;
+        }
+
+        // Reproducir sonido "beep" si la frecuencia es crítica
+        function beepSiUrgencia() {
+            if (frecuenciaCardiaca < frecuenciaCardiacaMin || frecuenciaCardiaca > frecuenciaCardiacaMax) {
+                beepSound.play();
+            }
+        }
+
+        // Actualizar los valores en el panel derecho y realizar el beep si es necesario
+        function actualizarValores() {
+            $('#frecuenciaCardiaca').text(frecuenciaCardiaca);
+            beepSiUrgencia();
+        }
+
+        // Simulación de la actualización de la frecuencia cardíaca
+        function simularFrecuenciaCardiaca() {
+            // Generar valores aleatorios para sim

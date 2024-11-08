@@ -1,0 +1,106 @@
+/* Estilos Generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background-color: #f4f4f4;
+    padding-top: 60px; /* Espacio para la barra superior */
+}
+
+/* Barra de Navegación Superior */
+.top-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    z-index: 1000;
+}
+
+.nav-left {
+    font-size: 1.2em;
+}
+
+.nav-logo {
+    height: 50px;
+    border-radius: 50%;
+}
+
+.nav-right a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+.nav-right a:hover {
+    color: #ccc;
+}
+
+/* Barra Lateral */
+.side-nav {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 200px;
+    height: calc(100vh - 60px);
+    background-color: #444;
+    color: white;
+    padding-top: 20px;
+    overflow-y: auto;
+}
+
+.side-nav h2 {
+    text-align: center;
+    color: #ddd;
+    margin-bottom: 10px;
+}
+
+.side-nav ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.side-nav ul li {
+    margin: 15px 0;
+}
+
+.side-nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+}
+
+.side-nav ul li a:hover {
+    background-color: #555;
+}
+
+/* Contenido Principal */
+.content {
+    margin-left: 220px; /* Espacio para la barra lateral */
+    padding: 20px;
+    flex-grow: 1;
+}
+
+/* Footer */
+.footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

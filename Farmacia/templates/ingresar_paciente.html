@@ -1,0 +1,38 @@
+
+{% extends "base.html" %}
+
+{% block titulo %} Ingreso de paciente {% endblock titulo %}
+
+
+{% block contenido %}
+       
+
+{% load static %}
+
+<link href={% static 'assets/css/index.css'%} rel="stylesheet" />
+ <!-- /. NAV SIDE  -->
+ <div id="page-wrapper" >
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-lg-12">
+             <h2>Ingreso de paciente</h2>   
+            </div>
+        </div>              
+
+
+
+
+
+<body>
+  
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Ingresar</button>
+       
+       
+    </form>
+</body>
+
+
+{% endblock %}

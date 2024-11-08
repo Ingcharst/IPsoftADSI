@@ -1,0 +1,30 @@
+
+{% extends "base.html" %}
+
+{% block titulo %} Triage {% endblock titulo %}
+
+
+{% block contenido %}
+       
+
+{% load static %}
+<html> 
+    <head> 
+        <title>Pacientes en Espera</title> 
+    </head> 
+    <body> 
+        <h1>Pacientes en Espera</h1> 
+        <table> <tr> 
+            <th>Nombre</th> 
+            <th>Identificación</th> 
+            <th>Fecha de Admisión</th> 
+        </tr>
+        {% for paciente in pacientes %} <tr> 
+            <td>{{ paciente.nombre }}</td> 
+            <td>{{ paciente.identificacion }}</td> 
+            <td>{{ paciente.fecha_admision }}</td> 
+        </tr> {% endfor %} 
+    </table> 
+</body>
+
+{% endblock %}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static  %}
+    <title>Monitor de Signos Vitales</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="{% static 'uciapp/css/style.css' %}">
+</head>
+<body>
+    <h1>Monitor de Signos Vitales - Unidad de Cuidados Intensivos</h1>
+    <div class="monitor-container">
+        <canvas id="ecg-canvas" class="heart-rate-canvas"></canvas>
+
+        <div class="vital-signs">
+            <div class="vital-card">
+                <p>Frecuencia Cardíaca</p>
+                <p id="heart-rate" style="font-size: 2em;">80</p> BPM
+            </div>
+            <div class="vital-card">
+                <p>Presión Arterial</p>
+                <p id="blood-pressure" style="font-size: 2em;">120/80</p> mmHg
+            </div>
+            <div class="vital-card">
+                <p>Saturación de Oxígeno</p>
+                <p id="oxygen-saturation" style="font-size: 2em;">98</p> %
+            </div>
+        </div>
+        
+        <button id="simulate-emergency">Simular Emergencia</button>
+    </div>
+
+    </div>
+
+    <script>
+        const heartRateElem = document.getElementById('heart-rate');
+        const bloodPressureElem = document.getElementById('blood-pressure');
+        const oxigenoElem = document.getElementById('oxygen-saturation');
+
+        const heartRateCanvas = document.getElementById('ecg-canvas');
+//        const pressureCanvas = document.getElementById('pressure-canvas');
+//        const temperatureCanvas = document.getElementById('temperature-canvas');
+
+        const heartRateCtx = ecg-canvas.getContext('2d');
+//        const pressureCtx = pressureCanvas.getContext('2d');
+//        const temperatureCtx = temperatureCanvas.getContext('2d');
+
+        let heartRate = 75;
+        let bloodPressure = 120;
+        let bloodSistolica =80;
+        let oxigeno = 98;
+
+        function updateVitals() {
+            // Simula cambios en los signos vitales
+            heartRate = Math.floor(Math.random() * (100 - 60 + 1)) + 60; // 60-100 bpm
+            bloodPressure = Math.floor(Math.random() * (140 - 90 + 1)) + 90; // 90-140 mmHg
+            bloodSistolica = Math.floor(Math.random() * (90 - 100 + 1)) + 100; // 90-140 mmHg
+            oxigeno = (Math.random() * (38 - 36 + 1) + 36).toFixed(1); // 36-38 °C
+
+            // Actualiza la visualización
+            heartRateElem.textContent = heartRate;
+            bloodPressureElem.textContent = bloodPressure+"/"+bloodSistolica;
+            oxigenoElem.textContent = oxigeno;
+
+            drawECGWave(heartRateCtx, heartRate);
+            //drawPressureWave(pressureCtx, bloodPressure);
+            //drawTemperatureWave(temperatureCtx, temperature);
+        }
+
+        function drawECGWave(ctx, heartRate) {
+            ctx.clearRect(0, 0, heartRateCanvas.width, heartRateCanvas.height);
+            ctx.beginPath();
+
+            // Dibuja una onda ECG simple basada en la frecuencia cardíaca
+            const waveLength = 200;
+            const waveHeight = heartRate / 2; // Ajustar el tamaño de la onda según el ritmo cardíaco
+            for (let i = 0; i < waveLength; i++) {
+                const x = i;
+                const y = waveHeight * Math.sin((i / waveLength) * Math.PI * 2);
+                ctx.lineTo(x, waveHeight - y + 100); // Centrado en el canvas
+            }
+            ctx.strokeStyle = '#0f0';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+/*
+        function drawPressureWave(ctx, bloodPressure) {
+            ctx.clearRect(0, 0, pressureCanvas.width, pressureCanvas.height);
+            ctx.beginPath();
+
+            // Dibuja una representación simple de la presión arterial
+            const waveLength = 200;
+            const waveHeight = bloodPressure / 2; // Ajustar el tamaño de la onda según la presión
+            for (let i = 0; i < waveLength; i++) {
+                const x = i;
+                const y = waveHeight * Math.sin((i / waveLength) * Math.PI * 2);
+                ctx.lineTo(x, waveHeight - y + 100); // Centrado en el canvas
+            }
+            ctx.strokeStyle = '#ff0';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        function drawTemperatureWave(ctx, temperature) {
+            ctx.clearRect(0, 0, temperatureCanvas.width, temperatureCanvas.height);
+            ctx.beginPath();
+
+            // Dibuja una representación simple de la temperatura
+            const waveLength = 200;
+            const waveHeight = temperature * 5; // Ajustar el tamaño de la onda según la temperatura
+            for (let i = 0; i < waveLength; i++) {
+                const x = i;
+                const y = waveHeight * Math.sin((i / waveLength) * Math.PI * 2);
+                ctx.lineTo(x, waveHeight - y + 100); // Centrado en el canvas
+            }
+            ctx.strokeStyle = '#00f';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+*/
+        // Actualiza los signos vitales cada segundo
+        setInterval(updateVitals, 1000);
+    </script>
+</body>
+
+</html>

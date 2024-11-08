@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block titulo %} Entrega de recetas {% endblock titulo %}
+
+
+{% block contenido %}
+       
+
+{% load static %}
+<link href={% static 'assets/css/index.css'%} rel="stylesheet" />
+
+ <!-- /. NAV SIDE  -->
+ <div id="page-wrapper" >
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-lg-12">
+             <h2>Entrega de medicamnetos </h2>   
+            </div>
+        </div>
+
+        <body> 
+            <h1>Entregar Receta para {{ receta.paciente.nombre }}</h1> 
+            <form method="post"> 
+                {% csrf_token %} 
+                {{ form.as_p }} 
+                <button type="submit">Entregar</button> 
+            </form> 
+        </body>
+
+    </div> 
+
+</div> <!-- /. PAGE INNER  -->
+
+</div> <!-- /. PAGE WRAPPER  -->
+
+</div> <!-- /. WRAPPER  -->
+
+{% endblock %}

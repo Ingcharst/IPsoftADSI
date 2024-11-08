@@ -1,0 +1,37 @@
+
+{% extends "base.html" %}
+
+{% block titulo %} Actualizar Personal Medico {% endblock titulo %}
+
+
+{% block contenido %}
+       
+{% load static %}
+<link href={% static 'assets/css/index.css'%} rel="stylesheet" />
+ <!-- /. NAV SIDE  -->
+ <div id="page-wrapper" >
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-lg-12">
+             <h2>Ingresar un Nuevo Personal Medico</h2>   
+            </div>
+        </div>   
+        
+    </head> 
+    <body> 
+        <div class="card"> 
+            <img src="{% static 'assets/img/PersonalMedico.png' %}" alt="Ingresar Médico"> 
+            <div> 
+                <h3>Datos del Personal Médico</h3> 
+                <form method="post"> 
+                    {% csrf_token %} {{ form.as_p }} 
+                    <button type="submit"class="btn btn-success">Guardar</button>
+                </form> 
+                <div> 
+                <a href="{% url 'lista_medicos' %}">Volver a la lista de médicos</a>
+                </div>
+            </div> 
+        </div> 
+    </body>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block titulo %} Historial clinico {% endblock titulo %}
+
+
+{% block contenido %}
+       
+
+{% load static %}
+<link href={% static 'assets/css/index.css'%} rel="stylesheet" />
+
+ <!-- /. NAV SIDE  -->
+ <div id="page-wrapper" >
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-lg-12">
+             <h2>Paciente en Atención Medica </h2>   
+            </div>
+        </div>
+        <div class="container-fluid mt-4"> 
+            <div class="card"> 
+                <div class="card-header"> 
+                    <h3><strong>Historia Clínica:</strong> {{ paciente.historia_clinica }}</h3> 
+                </div> 
+                <div class="card-body"> 
+                    <h2 class="my-4"> {{ paciente.nombre }}</h2> 
+                    <p><strong>Edad:</strong> {{ paciente.edad }}</p> 
+                    <p><strong>Género:</strong> {{ paciente.genero }}</p> 
+                    <p><strong>Historia Clínica:</strong> {{ paciente.historia_clinica }}</p>
+                 </div> 
+                </div> 
+            </div>
+            <h2>Recetas</h2> 
+            
+            <table class="table table-striped"> 
+                <thead> 
+                    <tr> 
+                        <th>Fecha</th>
+                        <th>Medicamento</th> 
+                        <th>Dosis</th> 
+                        <th>Tratamiento</th> 
+                    </tr> 
+                </thead> 
+
+                <tbody> 
+                    {% for receta in recetas %} 
+                    <tr> <td>{{ receta.fecha }}</td> 
+                        <td>{{ receta.medicamento }}</td> 
+                        <td>{{ receta.dosis }}</td> 
+                        <td>{{ receta.tratamiento }}</td> 
+                    </tr> 
+                    {% endfor %} 
+                </tbody> 
+            </table> 
+
+            <h2>Agregar Medicamento</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Añadir Medicamento</button>
+</form>
+        </div> 
+    </body> 
+</html>
+
+</div> 
+
+</div> <!-- /. PAGE INNER  -->
+
+</div> <!-- /. PAGE WRAPPER  -->
+
+</div> <!-- /. WRAPPER  -->
+
+{% endblock %}

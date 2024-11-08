@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECG Continuo con Frecuencia Dinámica</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'uciapp/css/style.css' %}">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+        }
+        canvas {
+            background-color: black;
+        }
+        label {
+            color: white;
+            font-family: Arial, sans-serif;
+            margin-top: 15px;
+        }
+        input {
+            color: black;
+            font-family: Arial, sans-serif;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="monitor">
+        <div class="monitor-izquierda">
+            <canvas id="ecgCanvas" width="800" height="400"></canvas>
+        </div>
+        <div class="panel-derecho">
+            <div class="signo">
+                <i class="fas fa-heart"></i>
+                <div class="valor">
+                    <span class="numero" id="frecuenciaCardiaca">{{ signos_vitales.frecuencia_cardiaca }}</span> <span class="unidad">PPM</span>
+                </div>
+            </div>
+            <div class="signo">
+                <i class="fas fa-tachometer-alt"></i>
+                <div class="valor">
+                    <span class="numero">{{ signos_vitales.tension_arterial_sistolica }}/{{ signos_vitales.tension_arterial_diastolica }}</span> <span class="unidad">mmHg</span>
+                </div>
+            </div>
+            <div class="signo">
+                <i class="fas fa-bars"></i>
+                <div class="valor">
+                    <span class="numero">{{ signos_vitales.saturacion_oxigeno }}</span> <span class="unidad">%SPO2</span>
+                </div>
+            </div>
+            <div class="signo">
+                <i class="fas fa-lungs"></i>
+                <div class="valor">
+                    <span class="numero">{{ signos_vitales.frecuencia_respiratoria }}</span> <span class="unidad">RPM</span>
+                </div>
+            </div>
+            <div class="signo">
+                <i class="fas fa-thermometer-half"></i>
+                <div class="valor">
+                    <span class="numero">{{ signos_vitales.temperatura }}</span> <span class="unidad">°C</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <label for="heartRate">Frecuencia Cardíaca (bpm):</label>
+    <input type="number" id="heartRate" value="60" min="30" max="200">
+
+    <script>
+        const canvas = document.getElementById('ecgCanvas');
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        let xOffset = 0;
+
+        // Inicialización de frecuencia cardíaca
+        var heartRate = parseInt(document.getElementById('heartRate').value);
+        heartRate = heartRate/2;
+        document.getElementById('frecuenciaCardiaca').innerText = heartRate;
+        // Calcular la longitud de onda según la frecuencia cardíaca
+        function calculateWavelength(bpm) {
+            return (3000 / bpm);  // Factor ajustable para controlar la longitud de la onda
+        }
+
+        let wavelength = calculateWavelength(heartRate);
+
+        // Definir valores normales de signos vitales
+        const normalRanges = {
+            frecuencia_cardiaca: { min: 60, max: 100 },
+            tension_arterial_sistolica: { min: 90, max: 140 },
+            tension_arterial_diastolica: { min: 60, max: 90 },
+            saturacion_oxigeno: { min: 95, max: 100 },
+            frecuencia_respiratoria: { min: 12, max: 20 },
+            temperatura: { min: 36, max: 37.5 }
+        };
+
+        function updateVitalSignsDisplay() {
+            const frecuenciaCardiacaElem = document.getElementById('frecuenciaCardiaca');
+    
+            const frecuenciaCardiaca = parseInt(frecuenciaCardiacaElem.innerText, 10);
+    
+            checkVitalSign('frecuencia_cardiaca', frecuenciaCardiaca, frecuenciaCardiacaElem);
+        }
+    
+        function checkVitalSign(type, value, element) {
+            const range = normalRanges[type];
+            if (value < range.min || value > range.max) {
+                element.style.color = 'red';
+                element.classList.add('blinking');
+            } else {
+                element.style.color = 'white'; 
+                element.classList.remove('blinking'); 
+            }
+        }
+    
+        const style = document.createElement('style');
+        style.innerHTML = `.blinking {
+                animation: blinker 1s linear infinite;
+            }
+            @keyframes blinker {
+                50% { opacity: 0; }
+            }`;
+        document.head.appendChild(style);
+    
+        // Actualizar frecuencia y longitud de onda según el valor ingresado
+        document.getElementById('heartRate').addEventListener('input', (event) => {
+            heartRate = event.target.value;
+            heartRate=heartRate/2;
+            wavelength = calculateWavelength(heartRate);
+        });
+
+        // Sonido de beep
+        const beepSound = new Audio("{% static 'uciapp/sounds/beep.mp3' %}"); // URL del archivo de sonido beep
+
+        function playBeep() {
+            beepSound.currentTime = 0; // Reinicia el sonido
+            beepSound.play();
+        }
+
+        function drawECG() {
+            ctx.clearRect(0, 0, width, height);
+            ctx.beginPath();
+            ctx.moveTo(0, height / 2);
+
+            // Dibujar la onda ECG
+            for (let x = 0; x < width; x++) {
+                let y = height / 2;
+                const cyclePosition = (x + xOffset) % wavelength;
+
+                // Crear picos agudos para cada latido
+                if (cyclePosition < wavelength * 0.1) {         // Onda P
+                    y -= 5;
+                } else if (cyclePosition < wavelength * 0.2) {  // Baja ligeramente antes de Q
+                    y += 2;
+                } else if (cyclePosition < wavelength * 0.25) { // Pico Q
+                    y += 10;
+                } else if (cyclePosition < wavelength * 0.3) {  // Pico R agudo
+                    y -= 40;
+                    if (x === Math.floor(width / 2)) playBeep(); // Reproduce beep en el pico R
+                } else if (cyclePosition < wavelength * 0.35) { // Pico S
+                    y += 25;
+                } else if (cyclePosition < wavelength * 0.5) {  // Baja un poco hacia T
+                    y -= 5;
+                } else if (cyclePosition < wavelength * 0.65) { // Onda T
+                    y -= 10;
+                }
+
+                ctx.lineTo(x, y);
+            }
+
+            ctx.strokeStyle = "#28a745";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            xOffset = (xOffset - 2) % wavelength;  // Desplazamiento circular
+
+            requestAnimationFrame(drawECG);
+        }
+
+        drawECG();  // Iniciar la animación
+    </script>
+</body>
+</html>

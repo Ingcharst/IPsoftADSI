@@ -1,0 +1,48 @@
+
+{% extends "base.html" %}
+
+{% block titulo %} Atencion Medica {% endblock titulo %}
+
+
+{% block contenido %}
+       
+
+{% load static %}
+
+<link href={% static 'assets/css/index.css'%} rel="stylesheet" />
+ <!-- /. NAV SIDE  -->
+ <div id="page-wrapper" >
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-lg-12">
+             <h2>Pacientes por atender</h2>   
+            </div>
+        </div> 
+        <div class="container-fluid mt-4">
+             <div class="row"> 
+                {% for paciente in pacientes %} 
+                <div class="col-md-4"> <!-- Puedes ajustar el tamaño de la columna según sea necesario --> 
+                    <div class="card mb-4"> 
+                        <div class="card-header"> 
+                            <h1><strong>Historia Clínica:</strong> {{ paciente.historia_clinica }}</h1>
+                        </div> 
+                        <div class="card-body"> 
+                            <h2 class="my-4">
+                                <a href="{% url 'historial_clinico' paciente.id %}">{{ paciente.nombre }}</a>
+                            </h2> 
+                            <p><strong>Edad:</strong> {{ paciente.edad }}</p> 
+                            <p><strong>Género:</strong> {{ paciente.genero }}</p> 
+                            <p><strong>Estado:</strong> {{ paciente.estado }}</p> 
+                        </div> 
+                    </div> 
+                </div> 
+                {% endfor %} 
+            </div> 
+        </div>
+          
+
+    
+
+</div>
+
+{% endblock %}

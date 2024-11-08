@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block titulo %} Admisiones {% endblock titulo %}
+
+
+{% block contenido %}
+       
+
+{% load static %}
+<body>
+
+    <link href={% static 'assets/css/index.css'%} rel="stylesheet" />
+ <!-- /. NAV SIDE  -->
+ <div id="page-wrapper" >
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-lg-12">
+             <h2>ADMISIONES</h2>   
+            </div>
+        </div> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paciente Editado</title>
+</head>
+<body>
+    <h2>Paciente Editado Exitosamente</h2>
+    <p>Los detalles del paciente {{ paciente.nombre }} {{ paciente.apellido }} han sido actualizados con éxito.</p>
+
+    <a href="{% url 'detalle_paciente' paciente.id %}">Ver Detalles del Paciente</a>
+    <a href="{% url 'listado_pacientes' %}">Volver al Listado de Pacientes</a>
+</body>
+</html>
+
+{% endblock %}

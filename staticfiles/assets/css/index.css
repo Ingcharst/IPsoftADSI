@@ -1,0 +1,6 @@
+body {
+    background-color: #f8f9fa; /* Color de fondo claro para mejor visibilidad */
+}
+.table th, .table td {
+    color: #050505; /* Color de texto oscuro */
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html> 
+    <head> 
+        <title>Lista de Medicamentos</title> 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> 
+    </head> 
+    <body> 
+        <div class="container"> 
+            <h1 class="my-4">Lista de Medicamentos</h1> 
+            <table class="table table-striped"> 
+                <thead> 
+                    <tr> 
+                        <th>Paciente</th> 
+                        <th>Medicamento</th> 
+                        <th>Fecha</th> 
+                        <th>Dosis</th> 
+                        <th>Tratamiento</th>
+                    </tr> 
+                </thead> 
+                <tbody> 
+                    {% for receta in recetas %}
+                    <tr> 
+                        <td>{{ receta.paciente }} 
+                        <td>{{ receta.medicamento }}</td> 
+                        <td>{{ receta.fecha }}</td> 
+                        <td>{{ receta.dosis }}</td> 
+                        <td>{{ receta.tratamiento }}</td>
+                    </tr> 
+                    {% endfor %} 
+                </tbody> 
+            </table> 
+        </div> 
+    </body> 
+</html>

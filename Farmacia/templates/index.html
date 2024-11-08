@@ -1,0 +1,82 @@
+
+{% extends "base.html" %}
+
+{% block titulo %} clinica IPSOFT {% endblock titulo %}
+
+
+{% block contenido %}
+       
+{% load static %}
+
+<link href={% static 'assets/css/index.css'%} rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <!-- /. NAV SIDE  -->
+ <div id="page-wrapper" >
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-lg-12">
+             <h2>Panel Administrativo</h2>   
+            </div>
+        </div>              
+         <!-- /. ROW  -->
+          <hr />
+        <div class="row">
+            <div class="col-lg-12 ">
+                <div class="alert alert-info">
+                     <strong>Bienvenido ! </strong> Veamos que tienes para hoy.
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Estadísticas
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="alert alert-success"> 
+                                    <strong>Pacientes Atendidos:</strong> 
+                                    {{ pacientes_Atendidos }} 
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="alert alert-danger">
+                                    <strong>Pacientes en Espera:</strong> {{ pacientes_Espera }} 
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="alert alert-dark">
+                                    <strong>Total Pacientes:</strong> {{ total_pacientes }} 
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="alert alert-info">
+                                     <strong>Pacientes por Medicamentos:</strong> {{ Medicamentos_porEntrega }} 
+                                </div>  
+
+                             </div>
+                        </div>
+
+                        <div class="row mt-4"> 
+                            <div class="col-12"> 
+                                <canvas id="myChart"></canvas>
+                             </div> 
+                            </div> 
+                        </div>
+                        <script> var ctx = document.getElementById('myChart').getContext('2d'); 
+                            var myChart = new Chart(ctx, { 
+                                type: 'bar', 
+                                data: { labels: ['Pacientes Atendidos', 'Pacientes en Espera','Total Pacientes'],
+                                 datasets: [{ 
+                                    label: 'Número de Pacientes', 
+                                    data: [{{ pacientes_Atendidos }}, {{ pacientes_Espera }},{{ total_pacientes }}], 
+                                    backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(24, 95, 177,0.2)'], 
+                                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)', 'rgba(24, 95, 177)'],
+                                    borderWidth: 1 }] }, 
+                                    options: { 
+                                        scales: { y: { beginAtZero: true } } 
+                                    } 
+                                });
+
+                            </script>
+                        
+
+{% endblock %}

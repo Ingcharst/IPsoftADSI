@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+
+{% block titulo %} Notas de Enfermeria {% endblock titulo %}
+
+<div>
+{% block contenido %}
+       
+
+{% load static %}
+<body>
+
+    <link href={% static 'assets/css/index.css'%} rel="stylesheet" />
+ <!-- /. NAV SIDE  -->
+ <div id="page-wrapper" >
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-lg-12">
+             <h2>Notas de enfermeria</h2>   
+            </div>
+        </div> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Notas de Enfermería</title>
+
+    <!-- Estilos CSS personalizados -->
+    <style>
+        /* Fuentes y fondo */
+    
+
+        /* Contenedor principal */
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Título */
+        h1 {
+            color: #007A33; /* Verde SENA */
+            text-align: center;
+            font-size: 2rem; /* Título más pequeño */
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Formulario de búsqueda */
+        .search-form {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .input-group input {
+            width: 60%;
+            padding: 10px; /* Ajustado para un input más pequeño */
+            font-size: 0.9rem; /* Fuente más pequeña en el input */
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .input-group input:focus {
+            border-color: #007A33;
+            box-shadow: 0 0 8px rgba(0, 122, 51, 0.5);
+        }
+
+        .input-group button {
+            background-color: #007A33; /* Verde SENA */
+            color: white;
+            padding: 10px 18px; /* Botón más pequeño */
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 0.9rem; /* Fuente más pequeña en el botón */
+            transition: all 0.3s ease-in-out;
+        }
+
+        .input-group button:hover {
+            background-color: #005c2d; /* Verde más oscuro */
+            transform: translateY(-2px);
+        }
+
+        /* Estilo de tabla */
+        .table-responsive {
+            margin-top: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        th,
+        td {
+            padding: 12px; /* Celdas de tabla más pequeñas */
+            text-align: center;
+            font-size: 0.9rem; /* Fuente más pequeña en la tabla */
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007A33; /* Verde SENA */
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Botones de acción */
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 8px; /* Ajustado para un espacio más pequeño */
+        }
+
+        .btn {
+            padding: 8px 16px; /* Botones más pequeños */
+            font-size: 0.8rem; /* Fuente más pequeña en los botones */
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+        /* Mensaje de alerta */
+        .alert-warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+            padding: 12px;
+            text-align: center;
+            font-size: 0.9rem; /* Fuente más pequeña en alertas */
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        /* Transición en tablas */
+        table, .btn-group {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Registro de Notas de Enfermería</h1>
+
+        <!-- Formulario de búsqueda -->
+        <form method="POST" action="{% url 'buscador' %}" class="search-form">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Buscar..." name="buscar" id="id_buscar" aria-label="Buscar">
+                <button class="btn" type="submit">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+            </div>
+        </form>
+
+        <!-- Tabla de empleados -->
+        {% if empleados %}
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Identificación</th>
+                        <th>Historia</th>
+                        <th>Fecha y Hora</th>
+                        <th>Primera Observación</th>
+                        <th>Acciones</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for empleado in empleados %}
+                    <tr id="empleado_{{ empleado.id }}">
+                        <td>{{ empleado.identificacion }}</td>
+                        <td>{{ empleado.historia }}</td>
+                        <td>{{ empleado.fecha_hora }}</td>
+                        <td>{{ empleado.nota_enfermeria }}</td>
+                        
+                        <td>
+                            <div class="btn-group">
+                                <!-- Botón de ver notas -->
+                                <a class="btn btn-info" title="Ver Notas del Paciente" href="{% url 'ver_nota' empleado.id %}">
+                                    <i class="fas fa-eye"></i> Ver
+                                </a>
+                                <!-- Botón de editar -->
+                                <a class="btn btn-warning" title="Editar datos del Empleado" href="{% url 'actualizar' empleado.id %}">
+                                    <i class="fas fa-pencil-alt"></i> Editar
+                                </a>
+                                <!-- Botón de eliminar -->
+                                <a class="btn btn-danger" title="Eliminar" href="{% url 'eliminar' empleado.id %}" onclick="return confirm('¿Estás seguro de eliminar este registro?');">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="alert-warning">No hay notas de pacientes.</p>
+        {% endif %}
+    </div>
+
+    <!-- Agregar iconos de FontAwesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+</body>
+
+</html>
+
+{% endblock %}
+</div>

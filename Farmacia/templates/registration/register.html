@@ -1,0 +1,43 @@
+
+{% extends "base.html" %}
+
+{% block titulo %} clinica IPSOFT {% endblock titulo %}
+
+
+{% block contenido %}
+       
+{% load static %}
+
+<div id="page-wrapper" >
+    <div id="page-inner">
+        <div class="row">
+            <div class="col-lg-8">
+             <h2>Registro de Usuario</h2>   
+            </div>
+        </div>   
+<style> .register-card { max-width: 400px; margin: auto; margin-top: 90px; } </style> 
+</head> 
+<body> 
+    <div class="container"> 
+        <div class="card register-card"> 
+            <div class="card-body"> 
+                <h3 class="card-title text-center">Registrar</h3> 
+                <form method="post"> 
+                    {% csrf_token %} 
+                    {{ form.as_p }} 
+                    <button type="submit" class="btn btn-primary btn-block">Registrar</button> 
+                </form> 
+            </div> 
+        </div> 
+    </div> 
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script> 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
+
+</body>
+
+
+{% endblock %}
